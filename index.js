@@ -38,10 +38,22 @@ async function run(){
             res.send(result);
                 })
 
-                app.get('/topRating',async(req,res)=>{
+        app.get('/topRating',async(req,res)=>{
                     const result= await reviewCollection.find().sort({rating:-1}).limit(6).toArray();
                     res.send(result)
                 })
+        
+        app.post('/allReviews',async(req,res)=>{
+            const data=req.body;
+            console.log(data);
+            const result= await reviewCollection.insertOne(data);
+            res.send({
+                success: true,
+                result
+            })
+
+        }) 
+
 
 
         await client.db("admin").command({ping:1});
