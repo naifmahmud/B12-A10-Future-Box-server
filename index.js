@@ -64,9 +64,24 @@ async function run(){
             res.send(result)
 
         })
+
+        // Edit Review
+        app.patch('/allReviews/:id',async(req,res)=>{
+            const id= req.params.id;
+            const editData= req.body;
+            const query= {'_id':new ObjectId(id)};
+ 
+            const result= await reviewCollection.updateOne(query,{$set: editData});
+
+            res.send({
+                success:true,
+                result
+            })
+
+        })
         
 
-        // Insert data to mmongodb
+        // Insert data to mongodb
         app.post('/allReviews',async(req,res)=>{
             const data=req.body;
             console.log(data);
@@ -77,6 +92,19 @@ async function run(){
             })
 
         }) 
+
+
+        // Delete Review
+        app.delete('/allReviews/:id',async(req,res)=>{
+            const {id}= req.params;
+            const query= {'_id': new ObjectId(id)}
+
+            const result= await reviewCollection.deleteOne(query);
+            res.send({
+                success:true,
+                result
+            })
+        })
 
 
 
