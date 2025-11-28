@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express= require("express");
 const cors= require("cors");
 const port= process.env.PORT || 3000;
@@ -34,7 +34,7 @@ async function run(){
 
 
         app.get('/allReviews',async(req,res)=>{
-            const result= await reviewCollection.find().toArray();
+            const result= await reviewCollection.find().sort({date: -1}).toArray();
             res.send(result);
                 })
 
@@ -42,6 +42,17 @@ async function run(){
                     const result= await reviewCollection.find().sort({rating:-1}).limit(6).toArray();
                     res.send(result)
                 })
+
+        app.get('/allReviews/:id',async(req,res)=>{
+            const {id}= req.params;
+            const query= {'_id': new ObjectId(id)}
+            const result= await reviewCollection.findOne(query)
+
+            res.send({
+                success:true,
+                result
+            })
+        })
         
         app.post('/allReviews',async(req,res)=>{
             const data=req.body;
