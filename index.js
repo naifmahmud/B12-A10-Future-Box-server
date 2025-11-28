@@ -32,17 +32,19 @@ async function run(){
         const db = client.db("food-lover-DB");
         const reviewCollection = db.collection('allReviewCollection');
 
-
+        // All reviews
         app.get('/allReviews',async(req,res)=>{
             const result= await reviewCollection.find().sort({date: -1}).toArray();
             res.send(result);
                 })
 
+                // Top 6 Reviews
         app.get('/topRating',async(req,res)=>{
                     const result= await reviewCollection.find().sort({rating:-1}).limit(6).toArray();
                     res.send(result)
                 })
 
+            // find one by id
         app.get('/allReviews/:id',async(req,res)=>{
             const {id}= req.params;
             const query= {'_id': new ObjectId(id)}
@@ -53,7 +55,18 @@ async function run(){
                 result
             })
         })
+
+        // my reviews
+        app.get('/myReview',async(req,res)=>{
+
+            const email= req.query.email;
+            const result = await reviewCollection.find({user_email:email}).toArray();
+            res.send(result)
+
+        })
         
+
+        // Insert data to mmongodb
         app.post('/allReviews',async(req,res)=>{
             const data=req.body;
             console.log(data);
