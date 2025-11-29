@@ -104,6 +104,14 @@ async function run(){
             })
         })
 
+        // get favorite data 
+        app.get('/favorites',async(req,res)=>{
+            const email= req.query.email;
+            const result= await favoriteCollection.find({fav_user_email:email}).toArray();
+            
+            res.send(result);
+        })
+
 
         // Delete Review
         app.delete('/allReviews/:id',async(req,res)=>{
