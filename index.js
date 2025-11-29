@@ -99,6 +99,7 @@ async function run(){
         // Insert data to favorite
         app.post('/favorites',async(req,res)=>{
             const data= req.body;
+            data._id= new ObjectId();
             const result= await favoriteCollection.insertOne(data);
             res.send({
                 success:true,
