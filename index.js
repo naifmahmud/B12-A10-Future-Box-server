@@ -31,6 +31,7 @@ async function run(){
         await client.connect();
         const db = client.db("food-lover-DB");
         const reviewCollection = db.collection('allReviewCollection');
+        const favoriteCollection= db.collection('favorites');
 
         // All reviews
         app.get('/allReviews',async(req,res)=>{
@@ -92,6 +93,16 @@ async function run(){
             })
 
         }) 
+
+        // Insert data to favorite
+        app.post('/favorites',async(req,res)=>{
+            const data= req.body;
+            const result= await favoriteCollection.insertOne(data);
+            res.send({
+                success:true,
+                result
+            })
+        })
 
 
         // Delete Review
