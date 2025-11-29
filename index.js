@@ -47,7 +47,7 @@ async function run(){
 
             // find one by id
         app.get('/allReviews/:id',async(req,res)=>{
-            const {id}= req.params;
+            const id= req.params.id;
             const query= {'_id': new ObjectId(id)}
             const result= await reviewCollection.findOne(query)
 
@@ -86,6 +86,8 @@ async function run(){
         app.post('/allReviews',async(req,res)=>{
             const data=req.body;
             console.log(data);
+            data._id= new ObjectId();
+
             const result= await reviewCollection.insertOne(data);
             res.send({
                 success: true,
