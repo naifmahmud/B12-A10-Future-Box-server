@@ -115,7 +115,6 @@ async function run(){
             res.send(result);
         })
 
-
         // Delete Review
         app.delete('/allReviews/:id',async(req,res)=>{
             const {id}= req.params;
@@ -126,6 +125,17 @@ async function run(){
                 success:true,
                 result
             })
+        })
+
+
+        // search 
+        app.get('/search',async(req,res)=>{
+            const searchText= req.query.search || "";
+            
+            const result= await reviewCollection.find({food_name:{$regex: searchText, $options:"i"}
+            }).toArray();
+
+            res.send(result);
         })
 
 
